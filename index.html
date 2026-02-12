@@ -7,7 +7,18 @@
   <title>RainbowConvert Pro - Universal Data Transformer</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0b0f13">
-  <style>
+
+<!-- Universal PWA / Mobile fallback (no code changed, only added) -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="HTMLApp">
+<meta name="apple-mobile-web-app-title" content="HTMLApp">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b0f13">
+<link rel="icon" href="icon.png" type="image/png">
+<link rel="apple-touch-icon" href="icon.png">
+   <style>
     :root {
       --bg: #0b0f13;
       --panel: #10161c;
@@ -1093,6 +1104,7 @@
     });
   </script>
 <script>
+/* Original Service Worker registration (unchanged) */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js')
@@ -1104,6 +1116,23 @@ if ('serviceWorker' in navigator) {
       });
   });
 }
+
+/* Universal fallback (added, does not modify your logic) */
+(function () {
+  try {
+    if (!('serviceWorker' in navigator)) {
+      console.log('Service Worker not supported in this browser, running in normal web mode.');
+    }
+  } catch (e) {
+    console.log('SW support check failed:', e);
+  }
+})();
 </script>
+<script>
+/* Promise polyfill for very old browsers (optional) */
+if (typeof Promise === "undefined") {
+  document.write('<script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"><\/script>');
+}
+  </script>
 </body>
 </html>
